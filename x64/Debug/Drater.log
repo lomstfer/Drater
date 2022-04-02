@@ -1,10 +1,12 @@
 ﻿  main.cpp
 C:\programmeringosv\Water\Waterpixel.hpp(16,23): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\programmeringosv\Water\main.cpp(182,32): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\programmeringosv\Water\main.cpp(183,35): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\programmeringosv\Water\main.cpp(209,17): warning C4305: '=': truncation from 'double' to 'float'
-C:\programmeringosv\Water\main.cpp(232,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\programmeringosv\Water\main.cpp(233,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(184,33): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(185,35): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(211,17): warning C4305: '=': truncation from 'double' to 'float'
+C:\programmeringosv\Water\main.cpp(235,51): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(236,51): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(239,40): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(240,40): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xmemory(681,68): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
@@ -29,6 +31,5 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.3070
           [
               _Ty=int
           ]
-C:\programmeringosv\Water\main.cpp(104): message : see reference to function template instantiation 'void std::vector<WaterPixel,std::allocator<WaterPixel>>::emplace_back<SDL_Texture*&,int,int,int,int>(SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
-C:\programmeringosv\Water\main.cpp(256): warning C4715: 'SDL_main': not all control paths return a value
+C:\programmeringosv\Water\main.cpp(147): message : see reference to function template instantiation 'void std::vector<WaterPixel,std::allocator<WaterPixel>>::emplace_back<SDL_Texture*&,int,int,int,int>(SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
   Drater.vcxproj -> C:\programmeringosv\Water\x64\Debug\Drater.exe

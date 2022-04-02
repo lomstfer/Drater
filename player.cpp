@@ -48,7 +48,7 @@ Player::Player(SDL_Texture *ptex, int px, int py, float pw, float ph)
 	animationSpeed = 10.0f;
 	flip = false;
 
-    speed = 200.0f;
+    speed = 30.0f;
 	speedX = 0.0f;
 	speedY = 0.0f;
     damp = 0.001f;
@@ -80,49 +80,49 @@ void Player::update(int winW, int winH, double deltaTime, const Uint8 *keys)
 
 	if (keys[SDL_SCANCODE_UP])
 	{
-		speedY = -speed;
+		speedY += -speed;
 	}
 
 	if (keys[SDL_SCANCODE_DOWN])
 	{
-		speedY = speed;
+		speedY += speed;
 	}
 
 	if (keys[SDL_SCANCODE_LEFT])
 	{
-		speedX = -speed;
+		speedX += -speed;
 		flip = false;
 	}
 
 	if (keys[SDL_SCANCODE_RIGHT])
 	{
-		speedX = speed;
+		speedX += speed;
 		flip = true;
 	}
 
-	if (keys[SDL_SCANCODE_UP] && keys[SDL_SCANCODE_LEFT])
+	/*if (keys[SDL_SCANCODE_UP] && keys[SDL_SCANCODE_LEFT])
 	{
-		speedY = -speed * (1 / sqrt(2));
-		speedX = -speed * (1 / sqrt(2));
+		speedY += -speed * (1 / sqrt(2));
+		speedX += -speed * (1 / sqrt(2));
 	}
 
 	if (keys[SDL_SCANCODE_UP] && keys[SDL_SCANCODE_RIGHT])
 	{
-		speedY = -speed * (1 / sqrt(2));
-		speedX = speed * (1 / sqrt(2));
+		speedY += -speed * (1 / sqrt(2));
+		speedX += speed * (1 / sqrt(2));
 	}
 
 	if (keys[SDL_SCANCODE_DOWN] && keys[SDL_SCANCODE_LEFT])
 	{
-		speedY = speed * (1 / sqrt(2));
-		speedX = -speed * (1 / sqrt(2));
+		speedY += speed * (1 / sqrt(2));
+		speedX += -speed * (1 / sqrt(2));
 	}
 
 	if (keys[SDL_SCANCODE_DOWN] && keys[SDL_SCANCODE_RIGHT])
 	{
-		speedY = speed * (1 / sqrt(2));
-		speedX = speed * (1 / sqrt(2));
-	}
+		speedY += speed * (1 / sqrt(2));
+		speedX += speed * (1 / sqrt(2));
+	}*/
 
 	// slow down x speed
 	speedX *= float(pow(damp, deltaTime));

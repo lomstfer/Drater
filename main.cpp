@@ -75,7 +75,7 @@ int main(int argc, char* args[])
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-	Mix_Music* cricketsBg = Mix_LoadMUS("assets/cricketsBg.wav");
+	Mix_Music* draterBgMus = Mix_LoadMUS("assets/draterBgMusic.wav");
 	Mix_Chunk* ratDieSound = Mix_LoadWAV("assets/ratDie.wav");
 
 	int r = 140;
@@ -83,12 +83,14 @@ int main(int argc, char* args[])
 	int b = 73;
 	SDL_SetRenderDrawColor(renderer, r, g, b, 0);
 
+	SDL_Texture* draterBgTex = IMG_LoadTexture(renderer, "assets/draterBg.png");
+	Entity draterBg = Entity(draterBgTex, 128, 72, 0, 0, winW, winH, false);
+
 	const Uint8 *keys = SDL_GetKeyboardState(NULL);
 
 	bool menu = true;
 	bool game = false;
 	int fullscreenMode = -1;
-
 
 	std::vector<WaterPixel> waters;
 	float waterSpawningTime = 0;
@@ -98,13 +100,7 @@ int main(int argc, char* args[])
 	SDL_Texture* waterPixelTexture = IMG_LoadTexture(renderer, "assets/waterpixel.png");
 	Player waterCenter = Player(waterPixelTexture, winW / 2, winH / 2, 32, 32);
 	std::vector<WaterPixel> draters;
-
-	for (int i = 0; i < 3; ++i) {
-		for (int o = 0; o < 3; ++o) {
-			draters.emplace_back(waterPixelTexture, winW / 2 + o * 32, winH / 2 + i * 32, 16, 16);
-		}
-	}
-	//WaterPixel pixel1 = WaterPixel();
+	SDL_SetTextureAlphaMod(waterPixelTexture, 200);
 
 	// program running
 	while (gameRunning)
@@ -129,9 +125,9 @@ int main(int argc, char* args[])
 				}
 			}
 
-			if (Mix_PlayingMusic())
+			if (!Mix_PlayingMusic())
 			{
-				Mix_PauseMusic();
+				Mix_PlayMusic(draterBgMus, -1);
 			}
 
 			if (fullscreenMode == -1)
@@ -145,13 +141,22 @@ int main(int argc, char* args[])
 
 			if (keys[SDL_SCANCODE_RETURN])
 			{
+				for (int i = 0; i < 3; ++i) {
+					for (int o = 0; o < 3; ++o) {
+
+						draters.emplace_back(waterPixelTexture, winW / 2 + o * 32, winH / 2 + i * 32, 16, 16);
+					}
+				}
 				menu = false;
 				game = true;
-
-				r = 140;
-				g = 101;
-				b = 73;
+				r = 216;
+				g = 140;
+				b = 76;
 			}
+
+			SDL_RenderClear(renderer);
+
+			draterBg.render(renderer);
 
 			SDL_RenderPresent(renderer);
 		}
@@ -170,16 +175,13 @@ int main(int argc, char* args[])
 			}
 
 			// UPDATE
-			if (!Mix_PlayingMusic())
+			if (Mix_PlayingMusic())
 			{
-				Mix_PlayMusic(cricketsBg, -1);
-			}
-			else if (Mix_PausedMusic())
-			{
-				Mix_ResumeMusic();
+				Mix_HaltMusic();
 			}
 
-			spawnIncreaser += deltaTime / 10.0f;
+			if (spawnIncreaser < 3)
+				spawnIncreaser += deltaTime / 10.0f;
 			waterSpawningTime += deltaTime * spawnIncreaser;
 			if (waterSpawningTime > randomWaterSpawningTime) {
 				waterSpawningTime = 0;
@@ -210,8 +212,8 @@ int main(int argc, char* args[])
 				for (int o = 0; o < draters.size(); ++o) {
 					#define ot draters[o]
 					if (d.s_x < ot.s_x + ot.w && d.s_x + d.w > ot.x && d.s_y < ot.s_y + ot.h && d.s_y + d.h > ot.y){
-						d.speedX += rand() % 5 - 2;
-						d.speedY += rand() % 5 - 2;
+						d.speedX += rand() % 3 - 1;
+						d.speedY += rand() % 3 - 1;
 					}
 				}
 
@@ -229,28 +231,44 @@ int main(int argc, char* args[])
 				float distanceX = waterCenter.x - d.x;
 				float distanceY = waterCenter.y - d.y;
 				float distance = sqrt(distanceX * distanceX + distanceY * distanceY);
-				d.speedX += distanceX / distance * deltaTime * 500;
-				d.speedY += distanceY / distance * deltaTime * 500;
+				if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_RIGHT]) {
+					d.speedX += distanceX / distance * deltaTime * 1500;
+					d.speedY += distanceY / distance * deltaTime * 1500;
+				}
+				else {
+					d.speedX += distanceX * deltaTime * 8.0f;
+					d.speedY += distanceY * deltaTime * 8.0f;
+				}
+				
+				
 				d.updatePos(deltaTime);
 				d.render(renderer);
 
-				d.decrease(deltaTime / 10.0f);
+				d.decrease(deltaTime / 1.5f);
 				if (d.w <= 0)
 					draters.erase(draters.begin() + i);
 			}
+
+			if (draters.size() <= 0) {
+				waters.clear();
+				draters.clear();
+				game = false;
+				menu = true;
+			}
+
 			SDL_RenderPresent(renderer);
 		}
-		SDL_DestroyWindow(window);
-		Mix_FreeChunk(ratDieSound);
-		Mix_FreeMusic(cricketsBg);
-
-		ratDieSound = nullptr;
-		cricketsBg = nullptr;
-
-		Mix_Quit();
-		SDL_Quit();
-
-
-		return 0;
 	}
+	SDL_DestroyWindow(window);
+	Mix_FreeChunk(ratDieSound);
+	Mix_FreeMusic(draterBgMus);
+
+	ratDieSound = nullptr;
+	draterBgMus = nullptr;
+
+	Mix_Quit();
+	SDL_Quit();
+
+
+	return 0;
 }
