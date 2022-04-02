@@ -1,8 +1,9 @@
 ﻿  main.cpp
-C:\programmeringosv\Water\Waterpixel.hpp(15,20): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-C:\programmeringosv\Water\main.cpp(196,17): warning C4305: '=': truncation from 'double' to 'float'
-C:\programmeringosv\Water\main.cpp(209,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\programmeringosv\Water\main.cpp(210,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Waterpixel.hpp(16,20): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\programmeringosv\Water\main.cpp(181,25): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+C:\programmeringosv\Water\main.cpp(207,17): warning C4305: '=': truncation from 'double' to 'float'
+C:\programmeringosv\Water\main.cpp(228,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(229,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xmemory(681,68): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
@@ -34,8 +35,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.3070
               _Ty=double
           ]
   Generating code
-C:\programmeringosv\Water\main.cpp(233): warning C4715: 'SDL_main': not all control paths return a value
-  1 of 106 functions ( 0.9%) were compiled, the rest were copied from previous compilation.
+C:\programmeringosv\Water\main.cpp(252): warning C4715: 'SDL_main': not all control paths return a value
+  2 of 115 functions ( 1.7%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

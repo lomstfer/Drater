@@ -2,21 +2,24 @@
 #include <math.h>
 #include "Ftint.hpp"
 #include "Player.hpp"
-
+#include "iostream"
 class WaterPixel : public Player
 {
 public:
 	using Player::Player;
 
-	int decreaseVar = 0;
+	float decreaseVar = 0;
 
 	void decrease(double deltaTime)
 	{
-		decreaseVar += 1 * deltaTime;
+		
+		decreaseVar += 1.0f * deltaTime;
 		if (decreaseVar >= 1){
 			decreaseVar = 0;
-			w = w - 10;
-			h = h - 10;
+			w -= 1.0f;
+			h -= 1.0f;
+			s_x += 0.5f;
+			s_y += 0.5f;
 		}
 		
 	}

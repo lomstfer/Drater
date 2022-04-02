@@ -48,7 +48,7 @@ Player::Player(SDL_Texture *ptex, int px, int py, float pw, float ph)
 	animationSpeed = 10.0f;
 	flip = false;
 
-    speed = 300.0f;
+    speed = 200.0f;
 	speedX = 0.0f;
 	speedY = 0.0f;
     damp = 0.001f;

@@ -90,17 +90,18 @@ int main(int argc, char* args[])
 	int fullscreenMode = -1;
 
 
-	SDL_Texture* enemyTexture = IMG_LoadTexture(renderer, "assets/rat1.png");
-	std::vector<Entity> enemies;
-
+	std::vector<WaterPixel> waters;
+	float waterSpawningTime = 0;
+	int randomWaterSpawningTime = 1;
+	float spawnIncreaser = 1;
 
 	SDL_Texture* waterPixelTexture = IMG_LoadTexture(renderer, "assets/waterpixel.png");
 	Player waterCenter = Player(waterPixelTexture, winW / 2, winH / 2, 32, 32);
 	std::vector<WaterPixel> draters;
 
-	for (int i = 0; i < 10; ++i) {
-		for (int o = 0; o < 10; ++o) {
-			draters.emplace_back(waterPixelTexture, winW / 2 + o * 32 - 32 * 2.5, winH / 2 + i * 32 - 32 * 2.5, 16, 16);
+	for (int i = 0; i < 3; ++i) {
+		for (int o = 0; o < 3; ++o) {
+			draters.emplace_back(waterPixelTexture, winW / 2 + o * 32, winH / 2 + i * 32, 16, 16);
 		}
 	}
 	//WaterPixel pixel1 = WaterPixel();
@@ -178,18 +179,30 @@ int main(int argc, char* args[])
 				Mix_ResumeMusic();
 			}
 
+			spawnIncreaser += deltaTime / 10.0f;
+			waterSpawningTime += deltaTime * spawnIncreaser;
+			if (waterSpawningTime > randomWaterSpawningTime) {
+				waterSpawningTime = 0;
+				randomWaterSpawningTime = rand() % 4 + 1;
+				waters.emplace_back(waterPixelTexture, rand() % (winW - 50) + 25, rand() % (winH - 50) + 25, 16, 16);
+			}
 
 			// RENDER
 			SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 			SDL_RenderClear(renderer);
-			/*for (int i = 0; i < enemies.size(); ++i)
-			{
-				SDL_RenderCopyEx(renderer, enemies[i].tex, &enemies[i].srcRect, &enemies[i].rect, enemies[i].angle, NULL, SDL_FLIP_NONE);
-			}*/
 
 			waterCenter.update(winW, winH, deltaTime, keys);
 			waterCenter.noExplore(winW, winH);
-			waterCenter.render(renderer);
+
+			for (int p = 0; p < waters.size(); ++p)
+			{
+				waters[p].decrease(deltaTime);
+				waters[p].updatePos(deltaTime);
+				waters[p].render(renderer);
+
+				if (waters[p].w <= 0)
+					waters.erase(waters.begin() + p);
+			}
 
 			for (int i = 0; i < draters.size(); ++i) {
 				#define d draters[i]
@@ -201,17 +214,27 @@ int main(int argc, char* args[])
 						d.speedY += rand() % 5 - 2;
 					}
 				}
+
+				for (int p = 0; p < waters.size(); ++p)
+				{
+					if (collideCenter(d.rect, waters[p].rect)) {
+						waters[p].w = 16;
+						waters[p].h = 16;
+						draters.push_back(waters[p]);
+						waters.erase(waters.begin() + p);
+					}
+				}
 				
 				d.noExplore(winW, winH);
 				float distanceX = waterCenter.x - d.x;
 				float distanceY = waterCenter.y - d.y;
 				float distance = sqrt(distanceX * distanceX + distanceY * distanceY);
-				d.speedX += distanceX / distance * deltaTime * (rand() % 500);
-				d.speedY += distanceY / distance * deltaTime * (rand() % 500);
+				d.speedX += distanceX / distance * deltaTime * 500;
+				d.speedY += distanceY / distance * deltaTime * 500;
 				d.updatePos(deltaTime);
 				d.render(renderer);
 
-				d.decrease(deltaTime);
+				d.decrease(deltaTime / 10.0f);
 				if (d.w <= 0)
 					draters.erase(draters.begin() + i);
 			}
