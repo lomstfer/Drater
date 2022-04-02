@@ -76,11 +76,10 @@ int main(int argc, char* args[])
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	Mix_Music* draterBgMus = Mix_LoadMUS("assets/draterBgMusic.wav");
-	Mix_Chunk* ratDieSound = Mix_LoadWAV("assets/ratDie.wav");
 
-	int r = 140;
-	int g = 101;
-	int b = 73;
+	int r = 191;
+	int g = 122;
+	int b = 66;
 	SDL_SetRenderDrawColor(renderer, r, g, b, 0);
 
 	SDL_Texture* draterBgTex = IMG_LoadTexture(renderer, "assets/draterBg.png");
@@ -92,15 +91,19 @@ int main(int argc, char* args[])
 	bool game = false;
 	int fullscreenMode = -1;
 
+	SDL_Texture* draterLightTex = IMG_LoadTexture(renderer, "assets/draterLight.png");
+	Entity draterLight = Entity(draterLightTex, 43, 72, winW / 2, 0, winH * (43.0f / 72.0f), winH, false);
+
 	std::vector<WaterPixel> waters;
 	float waterSpawningTime = 0;
 	int randomWaterSpawningTime = 1;
 	float spawnIncreaser = 1;
 
 	SDL_Texture* waterPixelTexture = IMG_LoadTexture(renderer, "assets/waterpixel.png");
-	Player waterCenter = Player(waterPixelTexture, winW / 2, winH / 2, 32, 32);
 	std::vector<WaterPixel> draters;
-	SDL_SetTextureAlphaMod(waterPixelTexture, 200);
+
+	int mx = winW/2;
+	int my = winH/2;
 
 	// program running
 	while (gameRunning)
@@ -149,9 +152,9 @@ int main(int argc, char* args[])
 				}
 				menu = false;
 				game = true;
-				r = 216;
-				g = 140;
-				b = 76;
+				r = 191;
+				g = 122;
+				b = 66;
 			}
 
 			SDL_RenderClear(renderer);
@@ -167,17 +170,20 @@ int main(int argc, char* args[])
 			deltaLast = deltaNow;
 			deltaNow = SDL_GetPerformanceCounter();
 			deltaTime = (double)(deltaNow - deltaLast) / (double)SDL_GetPerformanceFrequency();
-
+			
 			// INPUT
 			while (SDL_PollEvent(&event))
 			{
 				ifquit(game, gameRunning, event, window);
+
 			}
 
 			// UPDATE
+			SDL_GetMouseState(&mx, &my);
+
 			if (Mix_PlayingMusic())
 			{
-				Mix_HaltMusic();
+				Mix_PauseMusic();
 			}
 
 			if (spawnIncreaser < 3)
@@ -193,16 +199,19 @@ int main(int argc, char* args[])
 			SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 			SDL_RenderClear(renderer);
 
-			waterCenter.update(winW, winH, deltaTime, keys);
-			waterCenter.noExplore(winW, winH);
+			draterLight.x -= 50.0f * deltaTime;
+			if (draterLight.x < -1000)
+				draterLight.x = winW + 1000;
+			draterLight.moveUpdate();
+			draterLight.render(renderer);
 
 			for (int p = 0; p < waters.size(); ++p)
 			{
-				waters[p].decrease(deltaTime);
+				waters[p].decrease(deltaTime * 50);
 				waters[p].updatePos(deltaTime);
 				waters[p].render(renderer);
 
-				if (waters[p].w <= 0)
+				if (waters[p].alpha <= 1)
 					waters.erase(waters.begin() + p);
 			}
 
@@ -212,44 +221,36 @@ int main(int argc, char* args[])
 				for (int o = 0; o < draters.size(); ++o) {
 					#define ot draters[o]
 					if (d.s_x < ot.s_x + ot.w && d.s_x + d.w > ot.x && d.s_y < ot.s_y + ot.h && d.s_y + d.h > ot.y){
-						d.speedX += rand() % 3 - 1;
-						d.speedY += rand() % 3 - 1;
+						d.speedX += rand() % 11 - 5;
+						d.speedY += rand() % 11 - 5;
 					}
 				}
 
-				for (int p = 0; p < waters.size(); ++p)
-				{
+				for (int p = 0; p < waters.size(); ++p){
 					if (collideCenter(d.rect, waters[p].rect)) {
-						waters[p].w = 16;
-						waters[p].h = 16;
+						waters[p].alpha = 200;
 						draters.push_back(waters[p]);
 						waters.erase(waters.begin() + p);
 					}
 				}
 				
 				d.noExplore(winW, winH);
-				float distanceX = waterCenter.x - d.x;
-				float distanceY = waterCenter.y - d.y;
+				float distanceX = mx - d.x;
+				float distanceY = my - d.y;
 				float distance = sqrt(distanceX * distanceX + distanceY * distanceY);
-				if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_RIGHT]) {
-					d.speedX += distanceX / distance * deltaTime * 1500;
-					d.speedY += distanceY / distance * deltaTime * 1500;
-				}
-				else {
-					d.speedX += distanceX * deltaTime * 8.0f;
-					d.speedY += distanceY * deltaTime * 8.0f;
-				}
+				d.speedX += distanceX / distance * deltaTime * 1500;
+				d.speedY += distanceY / distance * deltaTime * 1500;
 				
-				
+				d.decrease(deltaTime * (rand() % 30));
 				d.updatePos(deltaTime);
 				d.render(renderer);
-
-				d.decrease(deltaTime / 1.5f);
-				if (d.w <= 0)
+				
+				if (d.alpha <= 1)
 					draters.erase(draters.begin() + i);
 			}
-
+			Log(draters.size());
 			if (draters.size() <= 0) {
+				Log("ee");
 				waters.clear();
 				draters.clear();
 				game = false;
@@ -257,13 +258,13 @@ int main(int argc, char* args[])
 			}
 
 			SDL_RenderPresent(renderer);
+			Log(SDL_GetError());
 		}
+		
 	}
 	SDL_DestroyWindow(window);
-	Mix_FreeChunk(ratDieSound);
 	Mix_FreeMusic(draterBgMus);
 
-	ratDieSound = nullptr;
 	draterBgMus = nullptr;
 
 	Mix_Quit();
