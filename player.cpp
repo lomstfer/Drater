@@ -172,10 +172,7 @@ void Player::updatePos(double deltaTime)
 
 void Player::render(SDL_Renderer* renderer)
 {
-	if (flip)
-		SDL_RenderCopyEx(renderer, tex, &srcRect, &rect, 0, NULL, SDL_FLIP_HORIZONTAL);
-	else
-		SDL_RenderCopyEx(renderer, tex, &srcRect, &rect, 0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopy(renderer, tex, &srcRect, &rect);
 }
 
 void Player::noExplore(int winW, int winH)

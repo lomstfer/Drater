@@ -1,0 +1,66 @@
+﻿  main.cpp
+C:\programmeringosv\Water\Waterpixel.hpp(15,12): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Waterpixel.hpp(16,31): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(7,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(10,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(13,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(17,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(20,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(23,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(29,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(34,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(39,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(45,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(50,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(55,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(60,42): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(60,38): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\Colortransition.hpp(60,34): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(84,41): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(84,38): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(84,35): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(96,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(218,35): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(226,43): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(226,40): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(226,37): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(229,30): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(249,86): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(249,71): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(249,56): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(264,86): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(264,71): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(264,56): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\programmeringosv\Water\main.cpp(270,22): warning C4018: '<': signed/unsigned mismatch
+C:\programmeringosv\Water\main.cpp(280,22): warning C4018: '<': signed/unsigned mismatch
+C:\programmeringosv\Water\main.cpp(282,17): warning C4305: '=': truncation from 'double' to 'float'
+C:\programmeringosv\Water\main.cpp(283,23): warning C4018: '<': signed/unsigned mismatch
+C:\programmeringosv\Water\main.cpp(295,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(296,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\programmeringosv\Water\main.cpp(306,23): warning C4018: '<': signed/unsigned mismatch
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\xmemory(681,68): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\vector(592): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,SDL_Texture*&,int,int,int,int>(_Alloc &,_Objty *const ,SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              _Alloc=std::allocator<WaterPixel>,
+              _Ty=WaterPixel,
+              _Objty=WaterPixel
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\vector(597): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,SDL_Texture*&,int,int,int,int>(_Alloc &,_Objty *const ,SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              _Alloc=std::allocator<WaterPixel>,
+              _Ty=WaterPixel,
+              _Objty=WaterPixel
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\include\vector(610): message : see reference to function template instantiation 'void std::vector<WaterPixel,std::allocator<WaterPixel>>::_Emplace_back_with_unused_capacity<SDL_Texture*&,_Ty,_Ty,_Ty,_Ty>(SDL_Texture *&,_Ty &&,_Ty &&,_Ty &&,_Ty &&)' being compiled
+          with
+          [
+              _Ty=int
+          ]
+C:\programmeringosv\Water\main.cpp(222): message : see reference to function template instantiation 'void std::vector<WaterPixel,std::allocator<WaterPixel>>::emplace_back<SDL_Texture*&,int,int,int,int>(SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
+  Drater.vcxproj -> C:\programmeringosv\Water\Debug\Drater.exe

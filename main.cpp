@@ -69,8 +69,6 @@ int main(int argc, char* args[])
 
 	SDL_Window* window = SDL_CreateWindow("Drater", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	SDL_Surface *icon = IMG_Load("assets/icon.png");
-	SDL_SetWindowIcon(window, icon);
 	SDL_ShowCursor(SDL_DISABLE);
 	SDL_RenderSetLogicalSize(renderer, winW, winH);
 
@@ -102,8 +100,8 @@ int main(int argc, char* args[])
 	draterLight.r = 255;
 	// night = -1 day = 1
 	int nightDay = -1;
-	int days = 0;
-	int bestDays = days;
+	float days = 0;
+	float bestDays = days;
 
 	std::vector<WaterPixel> waters;
 	float waterSpawningTime = 0;
@@ -111,6 +109,7 @@ int main(int argc, char* args[])
 	float spawnIncreaser = 1;
 
 	SDL_Texture* waterPixelTexture = IMG_LoadTexture(renderer, "assets/waterpixel.png");
+	SDL_Texture* waterPlayerTexture = IMG_LoadTexture(renderer, "assets/waterpixel.png");
 	std::vector<WaterPixel> draters;
 
 	int mx = winW/2;
@@ -118,9 +117,10 @@ int main(int argc, char* args[])
 
 	Text title = Text("Drater", 100, { 173, 123, 94 }, "assets/Debrosee.ttf", winW - 320, winH / 2 - 182, true, renderer);
 	Text instT = Text("enter to start", 60, { 117, 112, 107 }, "assets/Pixellettersf.ttf", 300, winH / 2 - 100, true, renderer);
-	Text whathappened = Text("", 60, { 250, 250, 250 }, "assets/Pixellettersf.ttf", winW / 2, 20, true, renderer);
+	Text whathappened = Text("Mouse controls", 60, {250, 250, 250}, "assets/Pixellettersf.ttf", winW / 2, 20, true, renderer);
 
 	double gameTime = 0;
+
 
 	// program running
 	while (gameRunning)
@@ -164,7 +164,7 @@ int main(int argc, char* args[])
 				for (int i = 0; i < 3; ++i) {
 					for (int o = 0; o < 3; ++o) {
 
-						draters.emplace_back(waterPixelTexture, float(winW) / 2.0f + float(o) * 2.0f, float(winH) / 2.0f + float(i) * 2.0f, 16.0f, 16.0f);
+						draters.emplace_back(waterPlayerTexture, float(winW) / 2.0f + float(o) * 2.0f, float(winH) / 2.0f + float(i) * 2.0f, 16.0f, 16.0f);
 					}
 				}
 				menu = false;
@@ -210,7 +210,7 @@ int main(int argc, char* args[])
 			if (nightDay == -1)
 				spawnIncreaser = 10.0f;
 			if (nightDay == 1)
-				spawnIncreaser = 1.0f;
+				spawnIncreaser = 2.0f;
 			waterSpawningTime += deltaTime * spawnIncreaser;
 			if (waterSpawningTime > randomWaterSpawningTime + days) {
 				waterSpawningTime = 0;
@@ -228,7 +228,7 @@ int main(int argc, char* args[])
 			if (draterLight.angle > 90) {
 				draterLight.angle = -90.0f;
 				nightDay *= -1;
-				days += 1;
+				days += 0.5;
 			}
 
 			if (nightDay == -1) {
@@ -283,7 +283,7 @@ int main(int argc, char* args[])
 						d.speedY += rand() % 11 - 5;
 					}
 				}
-				
+
 				d.noExplore(winW, winH);
 				float distanceX = mx - d.x;
 				float distanceY = my - d.y;
@@ -291,14 +291,19 @@ int main(int argc, char* args[])
 				d.speedX += distanceX / distance * deltaTime * 1500;
 				d.speedY += distanceY / distance * deltaTime * 1500;
 				
-				d.decrease(deltaTime * (rand() % 50));
+				if (nightDay == -1)
+					d.decrease(deltaTime * (rand() % 200) / draters.size());
+				else
+					d.decrease(deltaTime * (rand() % 600) / draters.size());
+
 				d.updatePos(deltaTime);
 				d.render(renderer);
-				
+
 				for (int y = 0; y < waters.size(); ++y) {
 					if (collideCenter(d.rect, waters[y].rect)) {
 						Mix_PlayChannel(-1, waterCatch, 0);
 						waters[y].alpha = 200;
+						waters[y].tex = waterPlayerTexture;
 						draters.push_back(waters[y]);
 						waters.erase(waters.begin() + y);
 					}
@@ -320,18 +325,23 @@ int main(int argc, char* args[])
 				if (days > bestDays)
 				{
 					bestDays = days;
-					whathappened.text = "New Highscore: < " + std::to_string(days) + " > Days";
+					if (days == 1)
+						whathappened.text = "New Highscore: < " + std::to_string(ftint(days)) + " > Day";
+					else
+						whathappened.text = "New Highscore: < " + std::to_string(ftint(days)) + " > Days";
 				}
 				if (days <= bestDays)
 				{
-					whathappened.text = "Highscore: < " + std::to_string(days) + " > Days";
+					if (days == 1)
+						whathappened.text = "Highscore: < " + std::to_string(ftint(days)) + " > Day";
+					else
+						whathappened.text = "Highscore: < " + std::to_string(ftint(days)) + " > Days";
 				}
 				days = 0;
-			}
 
+			}
 			SDL_RenderPresent(renderer);
 		}
-		
 	}
 	SDL_DestroyWindow(window);
 	Mix_FreeMusic(draterBgMus);
@@ -344,6 +354,7 @@ int main(int argc, char* args[])
 	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	Log(SDL_GetError());
 
 	return 0;
 }
