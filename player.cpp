@@ -20,7 +20,7 @@
     dstRect.h = h;
 } */
 
-Player::Player(SDL_Texture *ptex, int px, int py, float pw, float ph)
+Player::Player(SDL_Texture *ptex, float px, float py, float pw, float ph)
 {
     tex = ptex;
     w = pw;

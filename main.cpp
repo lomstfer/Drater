@@ -14,6 +14,7 @@
 #include "Text.hpp"
 #include "Ftint.hpp"
 #include "Waterpixel.hpp"
+#include "Colortransition.hpp"
 
 
 #define Log(x) std::cout << x << std::endl;
@@ -76,10 +77,12 @@ int main(int argc, char* args[])
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	Mix_Music* draterBgMus = Mix_LoadMUS("assets/draterBgMusic.wav");
+	Mix_Music* draterDayMus = Mix_LoadMUS("assets/draterday.wav");
+	Mix_Chunk* waterCatch = Mix_LoadWAV("assets/waterCatch.wav");
 
-	int r = 191;
-	int g = 122;
-	int b = 66;
+	float r = 108.0f;
+	float g = 99.0f;
+	float b = 128.0f;
 	SDL_SetRenderDrawColor(renderer, r, g, b, 0);
 
 	SDL_Texture* draterBgTex = IMG_LoadTexture(renderer, "assets/draterBg.png");
@@ -91,8 +94,16 @@ int main(int argc, char* args[])
 	bool game = false;
 	int fullscreenMode = -1;
 
-	SDL_Texture* draterLightTex = IMG_LoadTexture(renderer, "assets/draterLight.png");
-	Entity draterLight = Entity(draterLightTex, 43, 72, winW / 2, 0, winH * (43.0f / 72.0f), winH, false);
+	SDL_Texture* draterLightTex = IMG_LoadTexture(renderer, "assets/draterLight-2.png");
+	Entity draterLight = Entity(draterLightTex, 20, 100, winW / 2, -200, 200, 20000, true);
+	draterLight.angle = -90.0f;
+	draterLight.r = 255;
+	draterLight.g = 255;
+	draterLight.r = 255;
+	// night = -1 day = 1
+	int nightDay = -1;
+	int days = 0;
+	int bestDays = days;
 
 	std::vector<WaterPixel> waters;
 	float waterSpawningTime = 0;
@@ -104,6 +115,12 @@ int main(int argc, char* args[])
 
 	int mx = winW/2;
 	int my = winH/2;
+
+	Text title = Text("Drater", 100, { 173, 123, 94 }, "assets/Debrosee.ttf", winW - 320, winH / 2 - 182, true, renderer);
+	Text instT = Text("enter to start", 60, { 117, 112, 107 }, "assets/Pixellettersf.ttf", 300, winH / 2 - 100, true, renderer);
+	Text whathappened = Text("", 60, { 250, 250, 250 }, "assets/Pixellettersf.ttf", winW / 2, 20, true, renderer);
+
+	double gameTime = 0;
 
 	// program running
 	while (gameRunning)
@@ -147,19 +164,29 @@ int main(int argc, char* args[])
 				for (int i = 0; i < 3; ++i) {
 					for (int o = 0; o < 3; ++o) {
 
-						draters.emplace_back(waterPixelTexture, winW / 2 + o * 32, winH / 2 + i * 32, 16, 16);
+						draters.emplace_back(waterPixelTexture, float(winW) / 2.0f + float(o) * 2.0f, float(winH) / 2.0f + float(i) * 2.0f, 16.0f, 16.0f);
 					}
 				}
 				menu = false;
 				game = true;
-				r = 191;
-				g = 122;
-				b = 66;
+				nightDay = -1;
+				r = 108.0f;
+				g = 99.0f;
+				b = 128.0f;
+
+				if (Mix_PlayingMusic())
+				{
+					Mix_HaltMusic();
+				}
 			}
 
 			SDL_RenderClear(renderer);
 
 			draterBg.render(renderer);
+			title.render();
+			instT.render();
+			whathappened.update();
+			whathappened.render();
 
 			SDL_RenderPresent(renderer);
 		}
@@ -170,28 +197,24 @@ int main(int argc, char* args[])
 			deltaLast = deltaNow;
 			deltaNow = SDL_GetPerformanceCounter();
 			deltaTime = (double)(deltaNow - deltaLast) / (double)SDL_GetPerformanceFrequency();
-			
+			gameTime += deltaTime;
 			// INPUT
 			while (SDL_PollEvent(&event))
 			{
 				ifquit(game, gameRunning, event, window);
-
 			}
 
 			// UPDATE
 			SDL_GetMouseState(&mx, &my);
 
-			if (Mix_PlayingMusic())
-			{
-				Mix_PauseMusic();
-			}
-
-			if (spawnIncreaser < 3)
-				spawnIncreaser += deltaTime / 10.0f;
+			if (nightDay == -1)
+				spawnIncreaser = 10.0f;
+			if (nightDay == 1)
+				spawnIncreaser = 1.0f;
 			waterSpawningTime += deltaTime * spawnIncreaser;
-			if (waterSpawningTime > randomWaterSpawningTime) {
+			if (waterSpawningTime > randomWaterSpawningTime + days) {
 				waterSpawningTime = 0;
-				randomWaterSpawningTime = rand() % 4 + 1;
+				randomWaterSpawningTime = rand() % 3 + 1;
 				waters.emplace_back(waterPixelTexture, rand() % (winW - 50) + 25, rand() % (winH - 50) + 25, 16, 16);
 			}
 
@@ -199,19 +222,54 @@ int main(int argc, char* args[])
 			SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 			SDL_RenderClear(renderer);
 
-			draterLight.x -= 50.0f * deltaTime;
-			if (draterLight.x < -1000)
-				draterLight.x = winW + 1000;
+			draterLight.angle += 5.0f * deltaTime;
+			draterLight.w = (360.0f - 5 * fabsf(draterLight.angle));
+			//draterLight.h = 72.0f * (draterLight.angle / 10.0f);
+			if (draterLight.angle > 90) {
+				draterLight.angle = -90.0f;
+				nightDay *= -1;
+				days += 1;
+			}
+
+			if (nightDay == -1) {
+				if (Mix_PlayingMusic())
+				{
+					Mix_HaltMusic();
+				}
+				r = 191.0f / 1.5f;
+				g = 122.0f / 1.5f;
+				b = 66.0f / 1.5f;
+				draterLight.r = r + 10.0f;
+				draterLight.g = g + 10.0f;
+				draterLight.b = b + 10.0f;
+				SDL_SetTextureColorMod(draterLight.tex, draterLight.r, draterLight.g, draterLight.b);
+			}
+
+			if (nightDay == 1) {
+				if (!Mix_PlayingMusic())
+				{
+					Mix_PlayMusic(draterDayMus, -1);
+				}
+
+				r = 191.0f;
+				g = 122.0f;
+				b = 66.0f;
+				draterLight.r = r + 10.0f;
+				draterLight.g = g + 10.0f;
+				draterLight.b = b + 10.0f;
+				SDL_SetTextureColorMod(draterLight.tex, draterLight.r, draterLight.g, draterLight.b);
+			}
+
 			draterLight.moveUpdate();
 			draterLight.render(renderer);
 
 			for (int p = 0; p < waters.size(); ++p)
 			{
-				waters[p].decrease(deltaTime * 50);
+				waters[p].decrease(deltaTime * 75.0f);
 				waters[p].updatePos(deltaTime);
 				waters[p].render(renderer);
 
-				if (waters[p].alpha <= 1)
+				if (waters[p].alpha <= 10)
 					waters.erase(waters.begin() + p);
 			}
 
@@ -225,14 +283,6 @@ int main(int argc, char* args[])
 						d.speedY += rand() % 11 - 5;
 					}
 				}
-
-				for (int p = 0; p < waters.size(); ++p){
-					if (collideCenter(d.rect, waters[p].rect)) {
-						waters[p].alpha = 200;
-						draters.push_back(waters[p]);
-						waters.erase(waters.begin() + p);
-					}
-				}
 				
 				d.noExplore(winW, winH);
 				float distanceX = mx - d.x;
@@ -241,35 +291,59 @@ int main(int argc, char* args[])
 				d.speedX += distanceX / distance * deltaTime * 1500;
 				d.speedY += distanceY / distance * deltaTime * 1500;
 				
-				d.decrease(deltaTime * (rand() % 30));
+				d.decrease(deltaTime * (rand() % 50));
 				d.updatePos(deltaTime);
 				d.render(renderer);
 				
-				if (d.alpha <= 1)
+				for (int y = 0; y < waters.size(); ++y) {
+					if (collideCenter(d.rect, waters[y].rect)) {
+						Mix_PlayChannel(-1, waterCatch, 0);
+						waters[y].alpha = 200;
+						draters.push_back(waters[y]);
+						waters.erase(waters.begin() + y);
+					}
+				}
+
+				if (d.alpha <= 10)
 					draters.erase(draters.begin() + i);
 			}
-			Log(draters.size());
+
 			if (draters.size() <= 0) {
-				Log("ee");
+				if (Mix_PlayingMusic())
+				{
+					Mix_HaltMusic();
+				}
 				waters.clear();
 				draters.clear();
 				game = false;
 				menu = true;
+				if (days > bestDays)
+				{
+					bestDays = days;
+					whathappened.text = "New Highscore: < " + std::to_string(days) + " > Days";
+				}
+				if (days <= bestDays)
+				{
+					whathappened.text = "Highscore: < " + std::to_string(days) + " > Days";
+				}
+				days = 0;
 			}
 
 			SDL_RenderPresent(renderer);
-			Log(SDL_GetError());
 		}
 		
 	}
 	SDL_DestroyWindow(window);
 	Mix_FreeMusic(draterBgMus);
-
 	draterBgMus = nullptr;
+	Mix_FreeMusic(draterDayMus);
+	draterDayMus = nullptr;
+	Mix_FreeChunk(waterCatch);
+	waterCatch = nullptr;
 
 	Mix_Quit();
+	IMG_Quit();
 	SDL_Quit();
-
 
 	return 0;
 }

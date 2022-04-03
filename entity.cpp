@@ -39,11 +39,13 @@ Entity::Entity(SDL_Texture* texture, int source_width, int source_height, float 
 
 void Entity::render(SDL_Renderer* renderer)
 {
-    SDL_RenderCopy(renderer, tex, &srcRect, &rect);
+    SDL_RenderCopyEx(renderer, tex, &srcRect, &rect, angle, NULL, SDL_FLIP_NONE);
 }
 
 void Entity::moveUpdate()
 {
+    rect.w = ftint(w);
+    rect.h = ftint(h);
     if (center)
     {
         rect.x = ftint(x);
@@ -56,4 +58,6 @@ void Entity::moveUpdate()
         rect.x = ftint(x);
         rect.y = ftint(y);
     }
+
+    
 }

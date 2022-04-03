@@ -42,7 +42,7 @@ public:
 
 	double Time;
 
-	Player(SDL_Texture *ptex, int px, int py, float pw, float ph);
+	Player(SDL_Texture* ptex, float px, float py, float pw, float ph);
 
 	Player() = default;
 

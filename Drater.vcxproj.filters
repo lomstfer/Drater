@@ -30,6 +30,9 @@
     <ClInclude Include="Waterpixel.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Colortransition.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="entity.cpp">
