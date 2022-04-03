@@ -1,1 +1,2 @@
 C:\programmeringosv\Water\x64\Debug\Drater.exe
+C:\Drater\x64\Debug\Drater.exe

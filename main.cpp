@@ -69,8 +69,9 @@ int main(int argc, char* args[])
 
 	SDL_Window* window = SDL_CreateWindow("Drater", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_FULLSCREEN_DESKTOP);
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	SDL_ShowCursor(SDL_DISABLE);
 	SDL_RenderSetLogicalSize(renderer, winW, winH);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
@@ -143,6 +144,13 @@ int main(int argc, char* args[])
 						break;
 					}
 				}
+
+				if (event.type == SDL_MOUSEMOTION)
+				{
+					SDL_GetMouseState(&mx, &my);
+					if (mx < 150)
+						SDL_WarpMouseInWindow(window, 150, my);
+				}
 			}
 
 			if (!Mix_PlayingMusic())
@@ -176,7 +184,7 @@ int main(int argc, char* args[])
 
 				if (Mix_PlayingMusic())
 				{
-					Mix_HaltMusic();
+					Mix_PauseMusic();
 				}
 			}
 
@@ -189,6 +197,8 @@ int main(int argc, char* args[])
 			whathappened.render();
 
 			SDL_RenderPresent(renderer);
+
+			Log(SDL_GetError());
 		}
 
 		// game running
@@ -202,20 +212,32 @@ int main(int argc, char* args[])
 			while (SDL_PollEvent(&event))
 			{
 				ifquit(game, gameRunning, event, window);
+
+				if (event.type == SDL_MOUSEMOTION)
+				{
+					SDL_GetMouseState(&mx, &my);
+					if (mx < 150)
+						SDL_WarpMouseInWindow(window, 150, my);
+					if (mx > winW - 150)
+						SDL_WarpMouseInWindow(window, winW - 150, my);
+					if (my < 100)
+						SDL_WarpMouseInWindow(window, mx, 100);
+					if (my > winH - 100)
+						SDL_WarpMouseInWindow(window, mx, winH - 100);
+				}
 			}
 
 			// UPDATE
-			SDL_GetMouseState(&mx, &my);
 
 			if (nightDay == -1)
-				spawnIncreaser = 10.0f;
+				spawnIncreaser = 6.0f;
 			if (nightDay == 1)
-				spawnIncreaser = 2.0f;
+				spawnIncreaser = 4.0f;
 			waterSpawningTime += deltaTime * spawnIncreaser;
 			if (waterSpawningTime > randomWaterSpawningTime + days) {
 				waterSpawningTime = 0;
 				randomWaterSpawningTime = rand() % 3 + 1;
-				waters.emplace_back(waterPixelTexture, rand() % (winW - 50) + 25, rand() % (winH - 50) + 25, 16, 16);
+				waters.emplace_back(waterPixelTexture, rand() % (winW - 300) + 150, rand() % (winH - 200) + 100, 16, 16);
 			}
 
 			// RENDER
@@ -265,7 +287,10 @@ int main(int argc, char* args[])
 
 			for (int p = 0; p < waters.size(); ++p)
 			{
-				waters[p].decrease(deltaTime * 75.0f);
+				if (nightDay == -1)
+					waters[p].decrease(deltaTime * 75.0f);
+				else
+					waters[p].decrease(deltaTime * 75.0f);
 				waters[p].updatePos(deltaTime);
 				waters[p].render(renderer);
 
@@ -292,9 +317,9 @@ int main(int argc, char* args[])
 				d.speedY += distanceY / distance * deltaTime * 1500;
 				
 				if (nightDay == -1)
-					d.decrease(deltaTime * (rand() % 200) / draters.size());
+					d.decrease(deltaTime * ((rand() % 200) / draters.size()));
 				else
-					d.decrease(deltaTime * (rand() % 600) / draters.size());
+					d.decrease(deltaTime * ((rand() % 1200) / draters.size()));
 
 				d.updatePos(deltaTime);
 				d.render(renderer);

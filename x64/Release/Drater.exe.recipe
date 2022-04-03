@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\programmeringosv\Water\x64\Release\Drater.exe</FullPath>
+      <FullPath>C:\Drater\x64\Release\Drater.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

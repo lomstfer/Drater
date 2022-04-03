@@ -1,1 +1,66 @@
-﻿  Drater.vcxproj -> C:\programmeringosv\Water\x64\Release\Drater.exe
+﻿  main.cpp
+C:\Drater\Waterpixel.hpp(15,12): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Waterpixel.hpp(16,31): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\Colortransition.hpp(7,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(10,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(13,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(17,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(20,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(23,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(29,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(34,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(39,17): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(45,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(50,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(55,17): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\Colortransition.hpp(60,42): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\Colortransition.hpp(60,38): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\Colortransition.hpp(60,34): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(85,41): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(85,38): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(85,35): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(97,60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Drater\main.cpp(217,35): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\main.cpp(225,43): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(225,40): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(225,37): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(228,30): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\main.cpp(248,86): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(248,71): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(248,56): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(263,86): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(263,71): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(263,56): warning C4244: 'argument': conversion from 'float' to 'Uint8', possible loss of data
+C:\Drater\main.cpp(284,17): warning C4305: '=': truncation from 'double' to 'float'
+C:\Drater\main.cpp(297,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Drater\main.cpp(298,50): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\xmemory(680,68): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\vector(602): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,SDL_Texture*&,int,int,int,int>(_Alloc &,_Objty *const ,SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              _Alloc=std::allocator<WaterPixel>,
+              _Ty=WaterPixel,
+              _Objty=WaterPixel
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\vector(607): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,SDL_Texture*&,int,int,int,int>(_Alloc &,_Objty *const ,SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              _Alloc=std::allocator<WaterPixel>,
+              _Ty=WaterPixel,
+              _Objty=WaterPixel
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\vector(620): message : see reference to function template instantiation 'void std::vector<WaterPixel,std::allocator<WaterPixel>>::_Emplace_back_with_unused_capacity<SDL_Texture*&,_Ty,_Ty,_Ty,_Ty>(SDL_Texture *&,_Ty &&,_Ty &&,_Ty &&,_Ty &&)' being compiled
+          with
+          [
+              _Ty=int
+          ]
+C:\Drater\main.cpp(221): message : see reference to function template instantiation 'void std::vector<WaterPixel,std::allocator<WaterPixel>>::emplace_back<SDL_Texture*&,int,int,int,int>(SDL_Texture *&,int &&,int &&,int &&,int &&)' being compiled
+  Generating code
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 209 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Drater.vcxproj -> C:\Drater\x64\Release\Drater.exe
